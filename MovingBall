@@ -1,0 +1,54 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+public class movball extends Frame implements Runnable
+{ /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+int x,y;
+  Thread t;
+  boolean flag;
+  public movball()
+  { x=0;
+    y=250;
+    addWindowListener(new mwa(this));
+    t=new Thread(this);
+    t.start();
+    flag=false;
+  }
+  public void run()
+  { for(;;)
+    { try
+      { repaint();
+        x++;
+        Thread.sleep(100);
+      }
+      catch(InterruptedException e)
+      {
+      }
+      if(flag)
+        break;
+    }
+  }
+  public void paint(Graphics g)
+  { g.drawOval(x,y,30,30);
+  }
+  public static void main(String s[])
+  { movball b=new movball();
+    b.setSize(new Dimension(1000,600));
+    b.setTitle("Running Ball");
+    b.setVisible(true);
+  }
+}
+class mwa extends WindowAdapter
+{ movball a;
+  public mwa(movball f)
+  { a=f;
+  }
+  public void windowClosing(WindowEvent e)
+  { a.flag=true;
+    a.t=null;
+    System.exit(0);
+  }
+}
